@@ -1,0 +1,104 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <h:form id="sidebar">
+        <p:accordionPanel  autoHeight="false" activeIndex="#{loginBean.tab}"  event="click" dynamic="true" cache="true">
+            <p:tab title="Purchasing">
+                <p:menu>
+                    <p:submenu>
+                        <p:menuitem  actionListener="#{loginBean.tabSet(0)}" update="sidebar" value="Create Order" url="/faces/Purchase/selectInventry.xhtml" icon="/resources/images/add.png" />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(0)}" update="sidebar" value="Send Order" url="/faces/Purchase/inventoryDetail.xhtml" icon="/resources/images/add.png" />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(0)}" update="sidebar" value="Verify Order" url="/faces/Purchase/marketingManager.xhtml" icon="/resources/images/add.png"/>
+                        <p:menuitem  actionListener="#{loginBean.tabSet(0)}" update="sidebar" value="Purchase Order" url="/faces/Purchase/orderList.xhtml" icon="/resources/images/add.png"/>
+
+                    </p:submenu>
+                </p:menu>
+            </p:tab>
+
+
+            <p:tab title="Project Manager">
+                <p:menu>
+                    <p:submenu>
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Create Project" url="/faces/jsfpages/Project/addProject.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Create Main BOQ" url="/faces/jsfpages/Boq/addMainBoq.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Create Org BOQ" url="/faces/jsfpages/Boq/addOrgBOQ.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Create Site Stock" url="/faces/jsfpages/Boq/addSiteStock.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Create Site" url="/faces/jsfpages/Project/addSite.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Create Invoice" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="generate Order" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Stock Status" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Project List" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Boq List" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Site List" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Indent List" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(1)}" update="sidebar" value="Order List" url="/faces/jsfpages/Order/orderList.xhtml" icon="/resources/images/add.png"  />
+                    </p:submenu>
+                </p:menu>
+            </p:tab>
+
+            <p:tab title="Purchase Manager">
+                <p:menu>
+                    <p:submenu>
+                        <p:menuitem  actionListener="#{loginBean.tabSet(2)}" update="sidebar" value="Create Purchase Order" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(2)}" update="sidebar" value="Create Order" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(2)}" update="sidebar" value="Indent List" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(2)}" update="sidebar" value="Order List" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(2)}" update="sidebar" value="Add Vendor" url="/faces/jsfpages/Vendor/addVendor.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(2)}" update="sidebar" value="Stock Status" url="#" icon="/resources/images/add.png"  />
+                    </p:submenu>
+                </p:menu>
+            </p:tab>
+
+            <p:tab title="Site Incharge">
+                <p:menu>
+                    <p:submenu>
+                        <p:menuitem  actionListener="#{loginBean.tabSet(3)}" update="sidebar" value="Site Manager DashBoard" url="/faces/jsfpages/Intent/siteManagerDashboard.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(3)}" update="sidebar" value="Create Intent" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(3)}" update="sidebar" value="Indent List"  url="/faces/jsfpages/Intent/intentList.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(3)}" update="sidebar" value="Stock Status" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(3)}" update="sidebar" value="Received List" url="#" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(3)}" update="sidebar" value="Material" url="#" icon="/resources/images/add.png"  />
+
+
+                    </p:submenu>
+                </p:menu>
+            </p:tab>
+
+            <p:tab title="Quality Manager">
+                <p:menu>
+                    <p:submenu>
+                        <p:menuitem  actionListener="#{loginBean.tabSet(4)}" update="sidebar" value="Received Order List" url="/faces/jsfpages/Order_QC/addOrderQc.xhtml" icon="/resources/images/add.png"  />
+
+                    </p:submenu>
+                </p:menu>
+            </p:tab>
+
+            <p:tab title="Others">
+                <p:menu>
+                    <p:submenu>
+                        <p:menuitem  actionListener="#{loginBean.tabSet(5)}" update="sidebar" value="Add Designation" url="/faces/jsfpages/UserSettings/addDesignation.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(5)}" update="sidebar" value="Add User" url="/faces/jsfpages/UserSettings/createUser.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(5)}" update="sidebar" value="Add ProductCategory" url="/faces/jsfpages/Product/addProductCategory.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(5)}" update="sidebar" value="Add Product" url="/faces/jsfpages/Product/addProduct.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(5)}" update="sidebar" value="Create Indent" url="/faces/jsfpages/Intent/createIntent.xhtml" icon="/resources/images/add.png"  />
+                        <p:menuitem  actionListener="#{loginBean.tabSet(5)}" update="sidebar" value="CreateQuotation" url="/faces/jsfpages/Quotation/QuotationDetails.xhtml" icon="/resources/images/add.png"  />
+
+                    </p:submenu>
+                </p:menu>
+            </p:tab>
+
+            <p:tab title="Dsr Settings">
+                <p:menu>
+                    <p:submenu>
+                        <p:menuitem  actionListener="#{loginBean.tabSet(6)}" update="sidebar" value="Add Main Boq" url="/faces/jsfpages/DSR/addMainBoq.xhtml" icon="/resources/images/add.png" />
+                    </p:submenu>
+                </p:menu>
+            </p:tab>
+
+        </p:accordionPanel>
+
+    </h:form>
+</ui:composition>

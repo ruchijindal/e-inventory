@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        title
+    </ui:define>
+
+
+    <ui:define name="content">
+        <h:form id="form1">
+            <p:panel header="Project-Site Selection" >
+                <h:panelGrid columns="4" cellspacing="5">
+                    <h:outputLabel value="Select Site" for="txt_site"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_site" value="#{sitemanagerdashboardbean.siteid}" style="width: 150px;" >
+                        <f:selectItem itemLabel="Select" itemValue="0"/>
+                        <f:selectItems  value="#{sitemanagerdashboardbean.siteList}"/>
+                        <p:ajax process="txt_site" event="change"  listener="#{sitemanagerdashboardbean.populateIntent()}" update="form2"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+
+
+        <h:form id="form2">
+            <p:dataTable var="product" value="#{sitemanagerdashboardbean.listofProductBySiteXML}" paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" paginatorPosition="bottom" rowStyleClass="#{sitemanagerdashboardbean.setColor(product)? 'shortage' : 'surplus'}" >
+
+                <f:facet name="header">
+                    Units
+                </f:facet>
+
+                <p:column headerText="Product Category" >
+
+                    <h:outputText value="#{product.productCategoryName}"/>
+
+                </p:column>
+
+                <p:column headerText="Product" >
+
+                    <h:outputText value="#{product.productName}"/>
+
+                </p:column>
+
+                <p:column headerText="Current Stock" >
+
+                    <h:outputText value="#{product.currentStock}"/>
+
+                </p:column>
+                <p:column headerText="Shortage Level" >
+
+                    <h:outputText value="#{product.shortage}"/>
+
+                </p:column>
+                <p:column headerText="Surplus Level" >
+
+                    <h:outputText value="#{product.surplus}"/>
+
+                </p:column>
+
+                <p:column headerText="Options">
+
+
+                    <p:commandLink value="Generate Indent" onclick="dlg1.show();"  immediate="#{sitemanagerdashboardbean.dialogBoxValue(product)}" update="form3"  />
+
+                </p:column>
+
+
+            </p:dataTable>
+
+        </h:form>
+
+        <p:dialog id="dg" header="Basic Dialog" widgetVar="dlg1" width="300" hideEffect="200" >
+            <h:form id="form3">
+                <h:panelGrid columns="2" cellspacing="3">
+                    <h:outputLabel value="Date:" for="txt_date"></h:outputLabel>
+                    <h:outputText value="#{sitemanagerdashboardbean.date}" id="txt_date"></h:outputText>
+                    <h:outputLabel value="product category:" for="txt_category"></h:outputLabel>
+                    <h:outputText id="txt_category" value="#{sitemanagerdashboardbean.forDialogBox.productCategoryName}" />
+                    <h:outputLabel value="product:" for="txt_product"></h:outputLabel>
+                    <h:outputText id="txt_product" value="#{sitemanagerdashboardbean.forDialogBox.productName}"/>
+                    <h:outputLabel value="Quntity for Intent:" for="txt_quantity"></h:outputLabel>
+                    <h:inputText id="txt_quantity" value="#{sitemanagerdashboardbean.eintent.prodQuantity}" />
+                    <h:outputLabel value="Remark:" for="txt_remark"></h:outputLabel>
+                    <h:inputTextarea id="txt_remark" value="#{sitemanagerdashboardbean.eintent.remark}"/><br/>
+                    <p:commandButton value="submit" actionListener="#{sitemanagerdashboardbean.generateIntent()}" oncomplete="dlg1.hide()" />
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:outputPanel id="display" style="display:block;margin-top:10px;">
+            <h:outputText id="name" value="Hello #{pprBean.firstname}" rendered="#{not empty pprBean.firstname}"/>
+        </p:outputPanel>
+
+
+
+    </ui:define>
+
+
+
+</ui:composition>

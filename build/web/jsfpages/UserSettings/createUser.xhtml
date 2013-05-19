@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Add User
+    </ui:define>
+
+
+    <ui:define name="content">
+
+
+        <h:form id="form1">
+            <p:messages id="msgs"  showDetail="false" />
+            <p:panel header="Add User">
+                <h:panelGrid columns="4" cellpadding="3">
+                    <h:outputLabel value="Name" for="txt_empname"></h:outputLabel>
+                    <h:inputText id="txt_empname" value="#{userBean.eEmployee.empName}" />
+
+                    <h:outputLabel value="Address" for="txt_address"></h:outputLabel>
+                    <h:inputTextarea rows="3" cols="20" id="txt_address" value="#{userBean.eEmployee.empAddress}" />
+
+                    <h:outputLabel value="Select Designation " for="txt_desg"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_desg" value="#{userBean.designationId}" style="width: 150px;">
+                        <f:selectItem itemLabel="Select"  noSelectionOption="true" itemValue="0"/>
+                        <f:selectItems  value="#{userBean.designationList}"/>
+                        <p:ajax process="txt_desg" event="change" update="psId,tree1" listener="#{userBean.renderSite()}"/>
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="User Id" for="txt_userId" ></h:outputLabel>
+                    <h:inputText id="txt_userId" value="#{userBean.eEmployee.userId}"/>
+
+                    <h:outputLabel value="Password" for="txt_password"></h:outputLabel>
+                    <h:inputSecret id="txt_password" value="#{userBean.password}"  />
+
+                    <h:outputLabel value=" Confirm Password" for="txt_cpassword"></h:outputLabel>
+                    <h:inputSecret id="txt_cpassword" value="#{userBean.confirmPassword}">
+                    </h:inputSecret>
+
+                    <h:outputLabel value="Email Id" for="txt_emailid"></h:outputLabel>
+                    <h:inputText id="txt_emailid" value="#{userBean.eEmployee.empEmailid}"/>
+
+                    <h:outputLabel value="Phone Number" for="txt_phone"></h:outputLabel>
+                    <h:inputText id="txt_phone" value="#{userBean.eEmployee.empPhoneNo}"/>
+
+                    <h:outputLabel value="Mobile Number" for="txt_mobile"></h:outputLabel>
+                    <h:inputText id="txt_mobile" value="#{userBean.eEmployee.empMobileNo}"/>
+                </h:panelGrid>
+                <br/>
+
+
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start"><h:graphicImage value="/resources/images/ajaxloading.gif" /></f:facet>
+
+                    <f:facet name="complete"><h:outputText value=" " /></f:facet>
+                </p:ajaxStatus>
+
+            </p:panel>
+
+            <p:panel header="Project-Sites Selection" id="psId">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="../design/ajaxloading.gif" />
+                    </f:facet>
+
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:tree id="tree1" value="#{userBean.root}" var="node" selectionMode="checkbox"  selection="#{userBean.selectedNodes}" expanded="true">
+
+                    <p:treeNode>
+                        <h:outputText value="&nbsp;&nbsp;#{node.name}"/>
+                    </p:treeNode>
+                </p:tree>
+                <p:commandButton value="Add" onclick="confirm.show();" action="#{userBean.showData()}" update="table"/>
+                <p:commandButton value="Reset" type="reset" style="margin-left: 5px;"/>
+
+            </p:panel>
+
+            <h:panelGrid columns="1">
+                <p:dataTable var="employee" value="#{userBean.employeeList}"  paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15" rowEditListener="#{userBean.editEmployee}"  paginatorPosition="bottom">
+                    <f:facet name="header">
+                        <div class="facetheader">
+                            User Details
+                        </div>
+                    </f:facet>
+                    <p:column headerText="User Name" style="width:150px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{employee.empName}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText value="#{employee.empName}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Address" style="width:200px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{employee.empAddress}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputTextarea value="#{employee.empAddress}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Designation" style="width:250px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{userBean.findDesignation(employee.EDesignation.id)}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu id="selectdesg" value="#{employee.EDesignation.id}">
+                                    <f:selectItem itemLabel="Select"/>
+                                    <f:selectItems value="#{userBean.designationList}" />
+
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Email Id" style="width:250px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{employee.empEmailid}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText value="#{employee.empEmailid}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Phone No." style="width:250px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{employee.empPhoneNo}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText value="#{employee.empPhoneNo}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Mobile No." style="width:250px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{employee.empMobileNo}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText value="#{employee.empMobileNo}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Options">
+                        <p:rowEditor/>
+                        <p:commandLink action="#{userBean.confirmDelete(employee)}"  onclick="confirmation.show()">
+                            <p:graphicImage value="/Resources/images/delete.png" alt=""/>
+
+                        </p:commandLink>
+
+                        <p:commandLink  value="Details" action="#{userBean.onRowSelect(employee)}" onclick="detail.show()" update="table1"/>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGrid>
+            <p:confirmDialog message="Are you sure ?"
+                             showEffect="bounce" hideEffect="explode"
+                             header="Delete Bank" severity="alert" widgetVar="confirmation">
+
+                <p:commandButton value="Yes Sure" update="msgs" oncomplete="confirmation.hide()"
+                                 action="#{userBean.deleteEmployee()}" >
+                    <p:collector value="#{employee}"
+                                 removeFrom="#{userBean.employeeList}"/>
+                </p:commandButton>
+                <p:commandButton value="Not Yet" onclick="confirmation.hide()" type="button" />
+
+            </p:confirmDialog>
+
+
+            <p:dialog header="Selected Project And Site" widgetVar="confirm"   height="400" width="300">
+
+
+                <p:treeTable id="table" value="#{userBean.root1}" var="document" readOnly="false" style="width:200px;" expanded="true">
+                    <p:column>
+                        <f:facet name="header">
+			Name
+                        </f:facet>
+                        <h:outputText value="#{document.name}" />
+                    </p:column>
+
+                </p:treeTable>
+
+                <br/><br/>
+                <p:commandButton value="Ok" action="#{userBean.addEmployee()}" update="form1,msgs,psId" ajax="false" />
+                <p:commandButton value="Cancel" onclick="confirm.hide()" ajax="false" />
+            </p:dialog>
+
+            <p:dialog header="Selected Project And Site" widgetVar="detail"  height="500" width="300">
+
+
+                <p:treeTable id="table1" value="#{userBean.root1}" var="document" readOnly="false" style="width:200px;" expanded="true">
+                    <p:column>
+                        <f:facet name="header">
+			Name
+                        </f:facet>
+                        <h:outputText value="#{document.name}" />
+                    </p:column>
+
+                </p:treeTable>
+                <br/>
+                <p:panel header="Project-Sites Selection" style="margin-left: -2px;">
+                    <p:tree id="tree2" value="#{userBean.root}" var="node" selectionMode="checkbox"  selection="#{userBean.selectedNodes}" expanded="true">
+
+                        <p:treeNode>
+                            <h:outputText value="&nbsp;&nbsp;#{node.name}"/>
+                        </p:treeNode>
+                    </p:tree>
+                </p:panel>
+                <p:commandButton value="Add"  action="#{userBean.editSite()}" update="tree2,table1"/>
+                <p:commandButton value="Delete"  style="margin-left: 5px;"/>
+
+            </p:dialog>
+
+        </h:form>
+
+
+    </ui:define>
+
+
+
+
+</ui:composition>

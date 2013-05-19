@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./../../Common/Template.xhtml">
+
+    <ui:define name="title">
+        Quotation
+    </ui:define>
+
+    <ui:define name="content">
+       <h:form id="quotaion">
+            <p:panel header="Order List " >
+                <p:dataTable var="order" value="#{addQuotationBean.quotationList}"  paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15"   paginatorPosition="bottom">
+                    <f:facet name="header">
+                        <div class="facetheader">
+                            Order Details
+                        </div>
+                    </f:facet>
+                    <p:column headerText="Product Category" style="width:150px">
+                        <h:outputText value="#{order.productCategoryName}"/>
+                    </p:column>
+                    <p:column headerText="Product" style="width:200px">
+                        <h:outputText value="#{order.productName}"/>
+                    </p:column>
+                    <p:column headerText="Order Date" style="width:200px">
+                        <h:outputText value="#{order.dateOfOrder}"/>
+                    </p:column>
+                    <p:column headerText="Quantity" style="width:200px">
+                        <h:outputText value="#{order.orderQuantity}"/>
+                    </p:column>
+                     <p:column headerText="Add Quotation" style="width:200px">
+                         <p:commandLink value="Add Quotation"   action="#{addQuotationBean.reDirect(order)}" update="form3"></p:commandLink>
+                    </p:column>
+
+                    
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+
+
+</ui:composition>

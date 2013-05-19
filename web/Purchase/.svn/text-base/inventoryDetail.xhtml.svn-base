@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../Common/Template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="title">
+        Inventory Listing
+    </ui:define>
+
+
+
+
+    <ui:define name="content">
+        <h:form >
+            <p:growl id="growl" showDetail="true" />
+            <h:panelGrid columns="2" border="1" style="width: 500px;">
+                <h:column>
+                    <p:panel header="Request"/>
+                    <h:panelGrid columns="2" style="width: 300px;">
+                        <h:outputText value="Client Id: "/>
+                        <h:inputText value="1001"/>
+                        <h:outputText value="Client Name "/>
+                        <h:inputText value="Shekhar Gupta"/>
+                        <h:outputText value="Site Id: "/>
+                        <h:inputText value="2001"/>
+                        <h:outputText value="Site Location: "/>
+                        <h:inputText value="New Delhi"/>
+                    </h:panelGrid>
+                </h:column>
+                <h:column>
+                    <p:panel header="Order List" style="margin-top: -45px;"/>
+                    <h:panelGrid columns="1" style="width: 200px;">
+                        <p:dataList value="#{pickListBean.inventoryList}" var="inventory" itemType="disc" >
+                            #{inventory.name}
+                        </p:dataList>
+                    </h:panelGrid>
+                </h:column>
+            </h:panelGrid>
+            <br/>
+            <h:form>
+                <h:panelGrid columns="1" style="width: 520px;">
+                    <p:dataTable var="inventory" value="#{pickListBean.inventoryList}" >
+                        <f:facet name="header">
+                            Inventory Detail
+                        </f:facet>
+
+                        <p:column>
+                            <f:facet name="header" >
+                                Order Name
+                            </f:facet>
+                            <h:outputText value="#{inventory.name}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Availability
+                            </f:facet>
+                            <h:outputText value="#{inventory.status}" styleClass="#{inventory.status}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Quantity
+                            </f:facet>
+                            <h:outputText value="#{inventory.quantity}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Price(/unit)
+                            </f:facet>
+                            <h:outputText value="#{inventory.price}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Total Price
+                            </f:facet>
+                            <h:outputText value="#{inventory.quantity * inventory.price}"/>
+                        </p:column>
+                        <p:columnGroup type="footer">
+
+                            <p:row>
+                                <p:column colspan="4" footerText="Total Amount" style="text-align:right"/>
+                                <p:column footerText="#{pickListBean.total}" />
+                            </p:row>
+
+                        </p:columnGroup>
+
+                    </p:dataTable>
+                </h:panelGrid>
+
+            </h:form>
+            <br/>
+            <p:commandButton  value="Local Purchasing" disabled="#{pickListBean.status}" actionListener="#{pickListBean.save2}" update="growl"/>&nbsp;
+            <p:commandButton  value="To Verify"  disabled="#{!pickListBean.status}" actionListener="#{pickListBean.save1}" update="growl"/>
+        </h:form>
+    </ui:define>
+
+
+
+</ui:composition>

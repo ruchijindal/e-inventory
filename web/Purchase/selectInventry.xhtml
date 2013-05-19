@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../Common/Template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"              
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="title">
+        Inventory Selection
+    </ui:define>
+
+
+    <ui:define name="content">
+        <h:form>
+
+            <p:panel header="Order Form" >
+                <h:panelGrid columns="4" cellpadding="8">
+                    <h:outputLabel value="Site Id" for="txt_siteId"></h:outputLabel>
+                    <h:inputText id="txt_siteId" onblur="">
+                        <p:ajax event="blur" process="txt_siteId" update="txt_sitelocation" listener="#{pickListBean.showSiteLocation()}"/>
+                    </h:inputText>
+                    <h:outputLabel value="Site Location" for="txt_sitelocation"></h:outputLabel>
+                    <h:inputTextarea id="txt_sitelocation" value="#{pickListBean.siteLocation}" readonly="true"/>
+                    <h:outputLabel value="Order By:"></h:outputLabel>
+                    <h:outputLabel value="moh332" style="font-weight: bold;"/>
+             
+
+                    <h:outputLabel value="Date " for="selectday"></h:outputLabel>
+                    <p:calendar id="selectday" mode="popup"  pattern="dd-MM-yy" />
+                </h:panelGrid>
+
+            </p:panel>
+            <h4 style="margin-left: 20px;">Select Order Items: </h4>
+            <p:pickList value="#{pickListBean.cities}"
+                        var="cities"
+                        itemLabel="#{cities}"
+                        itemValue="#{cities}" />
+
+            <p:commandButton value="Submit" action="#{pickListBean.renderList()}" update="form" />
+        </h:form>
+        <br/><br/>
+        <h:form id="form" >
+            <h:panelGrid columns="2" rendered="#{pickListBean.render}" style="width: 500px;">
+                <p:dataTable var="inventory" value="#{pickListBean.cities.target}" >
+                    <f:facet name="header">
+                        List of Required Item
+                    </f:facet>
+
+                    <p:column>
+                        <f:facet name="header" >
+                            Name
+                        </f:facet>
+                        <h:outputText value="#{inventory}" style="width: 500px;"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            Quantity
+                        </f:facet>
+                        <h:inputText  size="3"/>
+                    </p:column>
+
+
+                </p:dataTable>
+                <br/><br/>
+                <p:commandButton value="Submit"/>
+
+            </h:panelGrid>
+
+        </h:form>
+    </ui:define>
+
+
+
+</ui:composition>

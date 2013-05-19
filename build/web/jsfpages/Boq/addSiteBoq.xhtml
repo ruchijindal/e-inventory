@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Add Site Stock
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="siteBoq">
+            <p:panel header="Project-Site Selection" >
+                <h:panelGrid columns="4" cellspacing="5">
+                    <h:outputLabel value="Select Project" for="txt_proj"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_proj" value="#{siteStockBean.projectId}" style="width: 150px;">
+                        <f:selectItem itemLabel="Select"/>
+                        <f:selectItems  value="#{siteStockBean.projectList}"/>
+                        <p:ajax process="txt_proj" event="change" update="txt_site,itemform1" listener="#{siteStockBean.populateSite()}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="Select Site" for="txt_site"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_site" value="#{siteStockBean.siteId}" style="width: 150px;" >
+                        <f:selectItem itemLabel="Select" itemValue="0"/>
+                        <f:selectItems  value="#{siteStockBean.siteList}"/>
+                        <p:ajax process="txt_site" event="change"  update="itemform1" />
+                    </h:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+            <p:panel header="Item Selection" >
+                <p:tree value="#{siteStockBean.root}" var="node" selectionMode="checkbox"  selection="#{siteStockBean.selectedNodes}" >
+                    <p:treeNode>
+                        <h:outputText value="&nbsp;&nbsp;#{node.name}" />
+                    </p:treeNode>
+                </p:tree>
+                <p:commandButton value="Add Stock" action="#{siteStockBean.showData()}" update="itemform1,siteBoq"/>
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start"><h:graphicImage value="/resources/images/ajaxloading.gif" /></f:facet>
+                    <f:facet name="complete"><h:outputText value=" " /></f:facet>
+                </p:ajaxStatus>
+            </p:panel>
+        </h:form>
+
+
+
+        <h:form id="itemform1" prependId="false">
+            <p:treeTable value="#{siteStockBean.root1}" var="document">
+                <p:column>
+                    <f:facet name="header">
+				Name
+                    </f:facet>
+                    <h:outputText  value="#{document.name}" >
+                    </h:outputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+				Surplus
+                    </f:facet>
+                    <h:inputText id="surplus"  value="#{siteStockBean.surplus}" rendered="#{siteStockBean.chkstatus(document)}" size="4">
+                    </h:inputText>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+				Shortage
+                    </f:facet>
+                    <h:inputText id="shortage" value="#{siteStockBean.shortage}" rendered="#{siteStockBean.chkstatus(document)}" size="4">
+                        
+                    </h:inputText>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+				Option
+                    </f:facet>
+                    <p:commandLink  id="delete" value="delete" >
+                        <f:setPropertyActionListener value="#{document}" target="#{siteStockBean.deletePSI}" for="delete"/>
+                        <p:ajax process="delete" event="onclick" listener="#{siteStockBean.delete}" update="itemform1"/>
+
+                    </p:commandLink>&nbsp;&nbsp;
+                    <p:commandLink actionListener ="#{siteStockBean.addDetails(document)}" value="add" >
+                    </p:commandLink>
+
+                </p:column>
+
+            </p:treeTable>
+
+            <p:commandButton value="show" action="#{siteStockBean.show()}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

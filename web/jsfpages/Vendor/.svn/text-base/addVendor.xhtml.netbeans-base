@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Add Vendor
+    </ui:define>
+
+
+
+    <ui:define name="content">
+        <h:form id="form1"  >
+            <p:messages id="msgs"  showDetail="false" />
+            <p:panel header="Add Vendor">
+                <h:panelGrid columns="4" cellpadding="3">
+
+
+                    <h:outputLabel value="Name" for="txt_name"></h:outputLabel>
+                    <h:inputText id="txt_name" value="#{vendorBean.eVendors.venName}" />
+
+                    <h:outputLabel value="Contact Person" for="txt_contactperson" ></h:outputLabel>
+                    <h:inputText id="txt_contactperson" value="#{vendorBean.eVendors.contactPerson}"/>
+
+                    <h:outputLabel value="Address" for="txt_address"></h:outputLabel>
+                    <h:inputTextarea rows="3" cols="20" id="txt_address" value="#{vendorBean.eVendors.venAddress}"/>
+
+                    <h:outputLabel value="Phone No" for="txt_phoneno"></h:outputLabel>
+                    <h:inputText id="txt_phoneno" value="#{vendorBean.eVendors.venPhNo}" />
+
+                    <h:outputLabel value="Mobile No" for="txt_mobileno"></h:outputLabel>
+                    <h:inputText id="txt_mobileno" value="#{vendorBean.eVendors.venMobNo}" />
+
+                    <h:outputLabel value="Email" for="txt_email" ></h:outputLabel>
+                    <h:inputText id="txt_email" value="#{vendorBean.eVendors.venEmail}"/>
+
+
+                    <h:outputLabel value="Remark" for="txt_remark" ></h:outputLabel>
+                    <h:inputTextarea id="txt_remark" value="#{vendorBean.eVendors.remark}" rows="3" cols="20"/>
+
+                </h:panelGrid>
+            </p:panel>
+            <br/>
+
+            <p:panel header="Item Selection" id="psId">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="../design/ajaxloading.gif" />
+                    </f:facet>
+
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:tree value="#{vendorBean.root}" var="node" selectionMode="checkbox"  selection="#{vendorBean.selectedNodes}">
+                    <p:treeNode>
+                        <h:outputText value="&nbsp;&nbsp;#{node.name}" />
+                    </p:treeNode>
+                </p:tree>
+                <p:commandButton value="Add" action="#{vendorBean.addvendor()}" update="form1,form2,msgs" ajax="false" />
+                <p:commandButton value="Reset" type="reset" style="margin-left: 5px;"/>
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start"><h:graphicImage value="/resources/images/ajaxloading.gif" /></f:facet>
+
+                    <f:facet name="complete"><h:outputText value=" " /></f:facet>
+                </p:ajaxStatus>
+
+            </p:panel>
+
+
+
+        </h:form>
+        <br/>
+
+        <h:form id="form2">
+            <h:panelGrid columns="1">
+                <p:dataTable var="vendor" value="#{vendorBean.vendorList}"  paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15" rowEditListener="#{vendorBean.editvendor}"  paginatorPosition="bottom">
+                    <f:facet name="header">
+                        <div class="facetheader">
+                            Vendors Details
+                        </div>
+                    </f:facet>
+                    <p:column headerText="Vendor Name" style="width:150px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{vendor.venName}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText value="#{vendor.venName}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Contact Person" style="width:250px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{vendor.contactPerson}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText value="#{vendor.contactPerson}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Address" style="width:250px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{vendor.venAddress}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputTextarea value="#{vendor.venAddress}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Phone no" style="width:200px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{vendor.venPhNo}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText value="#{vendor.venPhNo}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Mobile no" style="width:200px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{vendor.venMobNo}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputText value="#{vendor.venMobNo}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Email" style="width:250px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{vendor.venEmail}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputTextarea value="#{vendor.venEmail}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Remark" style="width:250px">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{vendor.remark}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <h:inputTextarea value="#{vendor.remark}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Options">
+                        <p:rowEditor/>
+                        <p:commandLink action="#{vendorBean.confirmDelete(vendor)}"  onclick="confirmation.show()">
+                            <p:graphicImage value="/Resources/images/delete.png" alt=""/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGrid>
+            <p:confirmDialog message="Are you sure ?"
+                             showEffect="bounce" hideEffect="explode"
+                             header="Delete Bank" severity="alert" widgetVar="confirmation">
+
+                <p:commandButton value="Yes Sure" update="messages,form2" oncomplete="confirmation.hide()"
+                                 action="#{vendorBean.deletevendor()}" >
+                    <p:collector value="#{vendor}"
+                                 removeFrom="#{vendorBean.vendorList}"/>
+                </p:commandButton>
+                <p:commandButton value="Not Yet" onclick="confirmation.hide()" type="button" />
+
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+
+
+
+</ui:composition>

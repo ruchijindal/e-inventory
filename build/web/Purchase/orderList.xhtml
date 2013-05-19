@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../Common/Template.xhtml">
+
+    <ui:define name="title">
+       Purchase Order
+    </ui:define>
+
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel >
+
+                <h:panelGrid  columns="4" style="margin-bottom:10px">
+                    <h:panelGrid  columns="2" cellpadding="10px">
+                    <h:outputLabel value="Vendor: " ></h:outputLabel>
+                    <h:outputLabel value="Jaypee Cement Supplier"   />
+                    <h:outputLabel value="Contact Person: " ></h:outputLabel>
+                    <h:outputLabel value="Prashant Sharma"  />
+                    <h:outputLabel value="Phone No: " ></h:outputLabel>
+                    <h:outputLabel value="9715698356"  />
+                    <h:outputLabel value="Vendor Address: " ></h:outputLabel>
+                    <h:outputLabel value="Sector-2,Noida,(U.P)"  />
+                     <h:outputLabel value="Location: " ></h:outputLabel>
+                    <h:outputLabel  value="Noida"  />
+                     </h:panelGrid>
+
+                    <h:panelGrid  columns="2" cellpadding="10px" border="1" style="margin-left: 200px; margin-top: -40px; ">
+                      <h:outputLabel value="Order No" ></h:outputLabel>
+                      <h:inputText  value="125" style="width: 50px;"  />
+                     <h:outputLabel value="Date" ></h:outputLabel>
+                      <h:outputLabel   value="05/04/2011"  />
+                    <h:outputLabel value="Status" ></h:outputLabel>
+                    <h:outputLabel   value="Verified" style="font-weight:bold" />
+                    </h:panelGrid>
+
+
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+        <h:form>
+
+            <p:dataTable var="list" value="#{orderListBean.detailList}" >
+                <p:column headerText="Item" >
+                    <h:outputText value="#{list.item}"/>
+                </p:column>
+
+                <p:column headerText="Description" >                   
+                    <h:outputText value="#{list.description}"/>
+                </p:column>
+
+                <p:column headerText="Vendor Product" >                  
+                    <h:outputText value="#{list.vendorProduct}"/>
+                </p:column>
+
+                <p:column headerText="Quantity" >                   
+                    <h:outputText value="#{list.quantity}"/>
+                </p:column>
+
+                <p:column headerText="Unit Price" >                  
+                    <h:outputText value="#{list.price}"/>
+                </p:column>
+
+                <p:column headerText="Discount" >                  
+                    <h:outputText value="#{list.discount}"/>
+                </p:column>
+
+                <p:column headerText="Sub Total" >                   
+                    <h:outputText value="#{list.subtotal}"/>
+                </p:column>
+
+                <p:columnGroup type="footer">
+                    <p:row>
+                        <p:column colspan="6" footerText="Total Amount:(Rs.)"
+                                  style="text-align:right"  />
+
+                        <p:column footerText="67600" />
+
+
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="6" footerText="Tax @ 10%:(Rs.)"
+                                  style="text-align:right"  />
+
+                        <p:column footerText="6760" />
+
+
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="6" footerText="Grand Total:(Rs.)"
+                                  style="text-align:right"  />
+
+                        <p:column footerText="74360" />
+
+
+                    </p:row>
+                </p:columnGroup>
+
+            </p:dataTable>
+
+        </h:form>
+
+        <h:form>
+            <p:panel style=" margin-left: 1300px;">
+
+                <h:panelGrid  columns="2" cellpadding="10px" >
+                    <h:outputLabel value="Amount Detail:" style="font-weight: bold;color: #0074c7;"/><h:outputLabel/>
+                    <h:outputLabel value="Payable Amount:" ></h:outputLabel>
+                    <h:inputText value="74360"  readonly="true"/>
+                    <h:outputLabel value="Paid Amount:" ></h:outputLabel>
+                    <h:inputText value="10000" />
+                    <h:outputLabel value="Outstanding Amt:" ></h:outputLabel>
+                    <h:inputText value="64360" />
+                    <h:outputLabel value="Payment Method" ></h:outputLabel>
+                    <h:selectOneMenu >
+                        <f:selectItem itemLabel="Cash"/>
+                        <f:selectItem itemLabel="Cheque"/>
+                        <f:selectItem itemLabel="Credit Card"/>
+                        <f:selectItem itemLabel="Debit Card"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="Remark" ></h:outputLabel>
+                    <h:inputTextarea value=""  rows="3"/>
+
+                </h:panelGrid>
+                <p:commandButton value="Submit"/>&nbsp;&nbsp;
+                <p:commandButton value="Cancel" />
+            </p:panel>
+
+        </h:form>
+
+
+    </ui:define>
+
+
+
+</ui:composition>

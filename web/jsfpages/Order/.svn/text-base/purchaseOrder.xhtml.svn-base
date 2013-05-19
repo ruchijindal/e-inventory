@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Purchase Order
+    </ui:define>
+
+    <ui:define name="content">
+        <p:messages id="msgs" showDetail="false"/>
+        <h:form id="quotaion">           
+            <p:panel header="Available Quotation List " >
+                <p:dataTable var="order" value="#{orderListBean.quotationList}"  paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15"   paginatorPosition="bottom">
+                    <f:facet name="header">
+
+                        Quotation Details
+
+                    </f:facet>
+                    <p:column headerText="Product Category" style="width:150px">
+                        <h:outputText value="#{order.productCategoryName}"/>
+                    </p:column>
+                    <p:column headerText="Product" style="width:200px">
+                        <h:outputText value="#{order.productName}"/>
+                    </p:column>
+                    <p:column headerText="Vendor Id" style="width:200px">
+                        <h:outputText value="#{order.vendorId}"/>
+                    </p:column>
+                    <p:column headerText="Vendor Name" style="width:200px">
+                        <h:outputText value="#{order.vendorName}"/>
+                    </p:column>
+                    <p:column headerText="Delivery Date" style="width:200px">
+                        <h:outputText value="#{order.deliveryDate}"/>
+                    </p:column>
+                    <p:column headerText="Delivery Quantity" style="width:200px">
+                        <h:outputText value="#{order.deliveryQuantity}"/>
+                    </p:column>
+                    <p:column headerText="Received Date" style="width:200px">
+                        <h:outputText value="#{order.qReceivedDate}"/>
+                    </p:column>
+                    <p:column headerText="Unit Price" style="width:200px">
+                        <h:outputText value="#{order.unitPrice}"/>
+                    </p:column>
+                    <p:column headerText="Option" style="width:200px">
+                        <p:commandLink value="Purchase Order" onclick="dlg1.show();" action="#{orderListBean.forPurchaseOrder(order)}"  update="form"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+        <p:dialog id="dg" header="Generate Order: #{orderListBean.intentId}" widgetVar="dlg1" width="400" hideEffect="400" >
+            <h:form id="form">
+                <h:panelGrid columns="2" cellspacing="3">
+
+                    <h:outputLabel value="Order Date " for="txt_date"></h:outputLabel>
+                    <p:calendar id="txt_date" value="#{orderListBean.eOrder.date}" mode="popup" pattern="dd/MM/yyyy"/>
+                    <h:outputLabel value="Quantity:" for="txtqty"></h:outputLabel>
+                    <h:inputText  value="#{orderListBean.eOrder.prodQuantity}" id="txtqty"/>
+                    <h:outputLabel value="Remark:" for="txt_remark"></h:outputLabel>
+                    <h:inputTextarea id="txt_remark" value="#{orderListBean.eOrder.remark}" cols="20"/>
+                    <p:commandButton value="submit" action="#{orderListBean.addPurcahseOrder}" oncomplete="dlg1.hide()" update="msgs"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+    </ui:define>
+
+
+
+</ui:composition>

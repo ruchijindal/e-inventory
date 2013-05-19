@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Add Project
+    </ui:define>
+
+   
+    <ui:define name="content">
+       
+
+            <h:form id="form1"  >
+                <p:messages id="msgs"  showDetail="false" />
+                <p:panel header="Add Project">
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Project Name" for="txt_projname"></h:outputLabel>
+                        <h:inputText id="txt_projname" value="#{projectBean.eProject.name}" />
+
+                        <h:outputLabel value="Project Location" for="txt_location"></h:outputLabel>
+                        <h:inputText id="txt_location" value="#{projectBean.eProject.projLocation}" />                       
+
+                        <h:outputLabel value="Project Description" for="txt_description"></h:outputLabel>
+                        <h:inputTextarea rows="3" cols="20" id="txt_description" value="#{projectBean.eProject.projDescription}"/>
+
+                        
+                    </h:panelGrid>
+                    <br/>
+
+                    <p:commandButton value="Add" action="#{projectBean.addProject()}" update="form1,form2,msgs" ajax="false" />
+                    <p:commandButton value="Reset" type="reset" style="margin-left: 5px;"/>
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start"><h:graphicImage value="/resources/images/ajaxloading.gif" /></f:facet>
+
+                        <f:facet name="complete"><h:outputText value=" " /></f:facet>
+                    </p:ajaxStatus>
+
+                </p:panel>
+            </h:form>
+            <br/>
+            <h:form id="form2">
+                <h:panelGrid columns="1">
+                    <p:dataTable var="project" value="#{projectBean.projectList}"  paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" rowEditListener="#{projectBean.editProject}"  paginatorPosition="bottom">
+                        <f:facet name="header">
+                            <div class="facetheader">
+                               Project Details
+                            </div>
+                        </f:facet>
+                        <p:column headerText="Project Name" style="width:150px">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{project.name}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:inputText value="#{project.name}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Project Location" style="width:200px">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{project.projLocation}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:inputText value="#{project.projLocation}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>                        
+                        
+
+                        <p:column headerText="Project Description" style="width:250px">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{project.projDescription}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:inputTextarea value="#{project.projDescription}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                       
+                        <p:column headerText="Options">
+                            <p:rowEditor/>
+                            <p:commandLink action="#{projectBean.confirmDelete(project)}"  onclick="confirmation.show()">
+                                <p:graphicImage value="/Resources/images/delete.png" alt=""/>
+
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+                <p:confirmDialog message="Are you sure ?"
+                                 showEffect="bounce" hideEffect="explode"
+                                 header="Delete Bank" severity="alert" widgetVar="confirmation">
+
+                    <p:commandButton value="Yes Sure" update="messages,form2" oncomplete="confirmation.hide()"
+                                     action="#{projectBean.deleteproject()}" >
+                        <p:collector value="#{project}"
+                                     removeFrom="#{projectBean.projectList}"/>
+                    </p:commandButton>
+                    <p:commandButton value="Not Yet" onclick="confirmation.hide()" type="button" />
+
+                </p:confirmDialog>
+            </h:form>
+        </ui:define>
+
+
+
+
+</ui:composition>

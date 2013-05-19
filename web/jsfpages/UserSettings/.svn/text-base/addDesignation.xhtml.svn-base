@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Add Designation
+    </ui:define>
+
+
+    <ui:define name="content">
+
+
+            <h:form id="form1">
+                <p:messages id="msgs"  showDetail="false" />
+                <p:panel header="Add Designation">
+                    <h:panelGrid columns="2" cellpadding="3">
+                        <h:outputLabel value="Designation Name" for="txt_Designation"></h:outputLabel>
+                        <h:inputText id="txt_Designation" value="#{designationBean.eDesignation.designation}" />
+
+                       
+                    </h:panelGrid>
+                    <br/>
+
+                    <p:commandButton value="Add" action="#{designationBean.addDesignation()}" update="form1,form2,msgs,txt_Designation" ajax="false" />
+                    <p:commandButton value="Reset" type="reset" style="margin-left: 5px;"/>
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start"><h:graphicImage value="/resources/images/ajaxloading.gif" /></f:facet>
+
+                        <f:facet name="complete"><h:outputText value=" " /></f:facet>
+                    </p:ajaxStatus>
+
+                </p:panel>
+            </h:form>
+            <br/>
+            <h:form id="form2">
+                <h:panelGrid columns="1">
+                    <p:dataTable var="role" value="#{designationBean.designationList}"  paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" rowEditListener="#{designationBean.editDesignation}"  paginatorPosition="bottom">
+                        <f:facet name="header">
+                            <div class="facetheader">
+                              Designation Details
+                            </div>
+                        </f:facet>
+                        <p:column headerText="Designation Name" style="width:150px">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{role.designation}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <h:inputText value="#{role.designation}"/>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                       
+                       
+                       
+
+                        <p:column headerText="Options">
+                            <p:rowEditor/>
+                            <p:commandLink action="#{designationBean.confirmDelete(role)}"  onclick="confirmation.show()">
+                                <p:graphicImage value="/Resources/images/delete.png" alt=""/>
+
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+                <p:confirmDialog message="Are you sure ?"
+                                 showEffect="bounce" hideEffect="explode"
+                                 header="Delete Bank" severity="alert" widgetVar="confirmation">
+
+                    <p:commandButton value="Yes Sure" update="messages,form2" oncomplete="confirmation.hide()"
+                                     action="#{designationBean.deleteproject()}" >
+                        <p:collector value="#{role}"
+                                     removeFrom="#{designationBean.designationList}"/>
+                    </p:commandButton>
+                    <p:commandButton value="Not Yet" onclick="confirmation.hide()" type="button" />
+
+                </p:confirmDialog>
+            </h:form>
+        </ui:define>
+
+
+
+
+</ui:composition>

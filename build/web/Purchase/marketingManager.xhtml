@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../Common/Template.xhtml">
+
+            <ui:define name="title">
+                Marketing Manager
+            </ui:define>
+
+
+
+
+            <ui:define name="content">
+                <h:form id="market">
+                    <p:dataTable  var="marketing" value="#{marketingManagerBean.orderInfos}"  >
+                        <f:facet name="header">
+                            Marketing Manager
+                        </f:facet>
+
+                        <p:column headerText="Order No.">
+                            <h:outputText value="#{marketing.orederNo}"/>
+                        </p:column>
+                        <p:column headerText="Order Name">
+                            <h:outputText value="#{marketing.name}"/>
+                        </p:column>
+                        <p:column headerText="Order Date">
+                            <h:outputText value="#{marketing.orderDate}"/>
+                        </p:column>
+                        <p:column headerText="Order By">
+                            <h:outputText value="#{marketing.orderBy}"/>
+                        </p:column>
+                        <p:column headerText="Status" styleClass="#{marketing.status}">
+                            <h:outputText value="#{marketing.status}"/>
+                        </p:column>
+                        <p:column headerText="Option" >
+                            <p:commandLink value="Verify" action="#{marketingManagerBean.clear()}" update="market"  rendered="#{marketing.status.equals('Pending')}" />
+                        </p:column>
+                    </p:dataTable>
+
+
+                    <p:dialog styleClass="dialog1" rendered="#{marketingManagerBean.flag}" id="picture" widgetVar="dlg1" visible="true" header="Select Venders" width="500" height="300" resizable="false" showEffect="clip" hideEffect="clip">
+
+                        <h:form>
+                            <h:panelGrid columns="3" cellpadding="10" style="width: 450px;" >
+                                <h:outputLabel value="Item"  style="color: #0074c7;text-transform:uppercase"/>
+                                <h:outputLabel value="Vendor" style="color: #0074c7;text-transform:uppercase"/>
+                                 <h:outputLabel value="New Vendor" style="color: #0074c7;text-transform:uppercase"/>
+                                 <h:outputLabel value="1. Cement" />
+                                <h:selectOneMenu >
+                                    <f:selectItem itemLabel="Shyam Singh"/>
+                                    <f:selectItem itemLabel="Shiv Narayan"/>
+                                    <f:selectItem itemLabel="Rudra Pratap"/>
+                                </h:selectOneMenu>
+                                <p:inplace>
+                                    <h:inputText value="Add New Vandor" size="15"/>
+                                    
+                                </p:inplace>
+                                <h:outputLabel value="2. Bricks"  />
+                                <h:selectOneMenu >
+                                    <f:selectItem itemLabel="Gajendra Prashad"/>
+                                    <f:selectItem itemLabel="Vishnu Kant"/>
+                                    <f:selectItem itemLabel="Dhurva Sharma"/>
+                                </h:selectOneMenu>
+                                <p:inplace>
+                                    <h:inputText value="Add New Vendor" size="15" />
+                                </p:inplace>
+                            </h:panelGrid>
+                            <br/>
+                            <h:commandButton value="Verify" action="#{marketingManagerBean.clear()}"/>&nbsp;
+                            <h:commandButton value="Cancel" action="#{marketingManagerBean.class()}"/>
+                        </h:form>
+
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+
+
+        </ui:composition>
+
+    </body>
+</html>

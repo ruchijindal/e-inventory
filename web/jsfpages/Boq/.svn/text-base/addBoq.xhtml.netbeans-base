@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Bill Of Quantity
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="boqtable">
+            <p:growl showDetail="false"/>
+            <p:panel header="Add BOQ">
+                <p:tooltip global="true"/>
+                <h:panelGrid columns="4" cellpadding="3">
+                    <h:outputLabel value="Name Of Work" for="txt_nameofwork"></h:outputLabel>
+                    <h:inputText id="txt_nameofwork" value="#"  required="true" requiredMessage="Enter Name Of Work"/>
+                    <h:outputLabel value="Description" for="txt_desc"></h:outputLabel>
+                    <h:inputText id="txt_desc" value="#" required="true" requiredMessage="Enter the Description" />
+                </h:panelGrid>
+                <h:panelGrid columns="4" cellpadding="5" id="signatury" >
+                    <h:outputLabel value= "Signatury 1" for="signatury1" ></h:outputLabel>
+                    <h:selectOneMenu id="signatury1" value="#" >
+                        <f:selectItem itemLabel="Select Signatury " noSelectionOption="true" />
+                        <f:selectItems value="#"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value= "Signatury 2 " for="signatury2" ></h:outputLabel>
+                    <h:selectOneMenu id="signatury2" value="#"  >
+                        <f:selectItem itemLabel="Select Signatury " noSelectionOption="true"/>
+                        <f:selectItems value="#"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value= "Signatury 3 " for="signatury3"></h:outputLabel>
+                    <h:selectOneMenu id="signatury3" value="#" >
+                        <f:selectItem itemLabel="Select Signatury " noSelectionOption="true"/>
+                        <f:selectItems value="#"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br/>
+                <p:commandButton value="Add" action="#" update="boqtable,boqlist" />&nbsp;&nbsp;
+                <p:commandButton value="Reset" type="reset" />
+            </p:panel>
+        </h:form>
+
+        <h:form id="boqlist">
+            <p:dataTable var="list" value="#{boqlistBean.boqlist}" paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" rowEditListener="#{boqlistBean.editBoq}"   paginatorPosition="bottom">
+                <f:facet name="header">
+                    BOQ
+                </f:facet>
+                <p:column headerText="Name Of Work" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Description" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Estimation Cost(Rs)" >
+
+                    <h:outputText value="#{list.estimatedCost}">
+                        <f:convertNumber type="number" maxFractionDigits="2" minFractionDigits="2" />
+                    </h:outputText>
+
+                </p:column>
+
+                <p:column headerText="Options">
+                    <p:commandLink title="Click to Edit"><p:rowEditor/></p:commandLink> &nbsp;
+                    <p:commandLink    action="#{boqlistBean.deleteBoq(list)}" update="boqlist"  >
+                        <p:graphicImage value="/resources/images/delete.png" style="border: none" title="Click to Remove"/>
+
+                        <p:collector value="#{list}"
+                                     removeFrom="#{boqlistBean.boqlist}"/>
+                    </p:commandLink>
+                    &nbsp;
+                    <p:commandLink value="Details" action="#{boqBean.detail(list)}" title="Click to Show Details">
+                    </p:commandLink>
+                    &nbsp;
+                    <p:commandLink value="Get BOQ" action="#{boqBean.callServlet(list)}" title="Get Boq Report"/>
+
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+    </ui:define>
+
+
+</ui:composition>

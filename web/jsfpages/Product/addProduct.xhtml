@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml">
+
+    <ui:define name="title">
+        Add Product
+    </ui:define>
+
+
+    <ui:define name="content">
+        <h:form id="addProduct">
+            <p:messages id="msgs"  showDetail="false" />          
+            <p:panel header="Add Product for Product Category: #{ productBean.productCategoryName}">
+                <p:tooltip global="true"/>
+                <h:panelGrid columns="2" cellpadding="3">
+
+
+
+                    <h:outputLabel value="Product" for="txt_product"></h:outputLabel>
+                    <h:inputText id="txt_product" value="#{productBean.eProduct.name}" required="true" requiredMessage="Enter the Product" />
+                    <h:outputLabel value="Unit" for="txt_unit"></h:outputLabel>
+                    <h:inputText id="txt_unit" value="#{productBean.eProduct.unit}" required="true" requiredMessage="Enter Unit" />
+                    <h:outputLabel value="Rate" for="txt_rate"></h:outputLabel>
+                    <h:inputText id="txt_rate" value="#{productBean.eProduct.rate}" required="true" requiredMessage="Enter Rate" />
+                </h:panelGrid><br/>
+                <p:commandButton value="Add" action="#{productBean.addProduct()}" update="addProduct,product1,msgs" />&nbsp;&nbsp;
+                <p:commandButton value="Reset" type="reset" />
+            </p:panel>
+        </h:form>
+        <h:form id="product1">
+            <p:dataTable var="product" value="#{productBean.productList}" paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15" rowEditListener="#{productBean.editProduct}"  paginatorPosition="bottom">
+                <f:facet name="header">
+                    Units
+                </f:facet>
+
+                <p:column headerText="Product" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{product.name}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{product.name}" size="10"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Unit" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{product.unit}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{product.unit}" size="10"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                 <p:column headerText="Rate" >
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{product.rate}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <h:inputText value="#{product.rate}" size="10"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Options">
+                    <p:rowEditor/>
+                    <p:commandLink action="#{productBean.confirmDelete(product)}"  onclick="confirmation.show()">
+                        <p:graphicImage value="/Resources/images/delete.png" alt=""/>
+
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+
+            <p:confirmDialog message="Are you sure ?"
+                             showEffect="bounce" hideEffect="explode"
+                             header="Delete Bank" severity="alert" widgetVar="confirmation">
+
+                <p:commandButton value="Yes Sure" update="message,product1" oncomplete="confirmation.hide()"
+                                 action="#{productBean.deleteProduct()}" >
+                    <p:collector value="#{product}"
+                                 removeFrom="#{productBean.productList}"/>
+                </p:commandButton>
+                <p:commandButton value="Not Yet" onclick="confirmation.hide()" type="button" />
+
+            </p:confirmDialog>
+
+        </h:form>
+
+
+    </ui:define>
+
+</ui:composition>

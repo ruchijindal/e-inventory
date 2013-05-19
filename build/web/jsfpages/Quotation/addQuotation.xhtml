@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"                
+                template="./../../Common/Template.xhtml">
+
+    <ui:define name="title">
+        Add Quotation
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:panel header="Add Quotation Form" >
+                <p:dataTable var="vendor" value="#{addQuotationBean.vendorList}"  paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15"   paginatorPosition="bottom" rowStyleClass="#{addQuotationBean.setColor(vendor)? 'backcolor' : null}"     >
+                    <f:facet name="header">
+                        <div class="facetheader">
+                            Order Details
+                        </div>
+                    </f:facet>
+                    <p:column headerText="Vendor Name" style="width:150px">
+                        <h:outputText value="#{vendor.venName}"/>
+                    </p:column>
+                    <p:column headerText="Contact Person" style="width:200px">
+                        <h:outputText value="#{vendor.contactPerson}"/>
+                    </p:column>
+                    <p:column headerText="Address" style="width:200px">
+                        <h:outputText value="#{vendor.venAddress}"/>
+                    </p:column>
+                    <p:column headerText="Mobile No." style="width:200px">
+                        <h:outputText value="#{vendor.venMobNo}"/>
+                    </p:column>
+                    <p:column headerText="Contact No." style="width:200px">
+                        <h:outputText value="#{vendor.venPhNo}"/>
+                    </p:column>
+                    <p:column headerText="Email Id." style="width:200px">
+                        <h:outputText value="#{vendor.venEmail}"/>
+                    </p:column>
+                    <p:column headerText="Remark" style="width:200px">
+                        <h:outputText value="#{vendor.remark}"/>
+                    </p:column>
+                    <p:column headerText="Option" style="width:200px">
+                        <p:commandLink value="Add Quotation" onclick="dlg1.show();" action="#{addQuotationBean.forDialog(vendor)}" rendered="#{!addQuotationBean.renderRow}" update="form,form2"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+        <p:dialog id="dlg" header="Add Quotation"  widgetVar="dlg1" width="300" hideEffect="200" >
+            <h:form id="form2">
+                <h:panelGrid columns="2" cellspacing="3">
+                    <h:outputLabel value="Quantity:" for="txtqty"></h:outputLabel>
+                    <h:inputText  value="#{addQuotationBean.eQuotation.deliverQuantity}" id="txtqty"/>
+                    <h:outputLabel value="Unit Price:" for="unit_price"></h:outputLabel>
+                    <h:inputText  value="#{addQuotationBean.eQuotation.unitPrice}" id="unit_price"/>
+                    <h:outputLabel value="Date of Received Quotation " for="txtdod"></h:outputLabel>
+                    <p:calendar id="txtdod" value="#{addQuotationBean.eQuotation.receivedDate}" mode="popup"  pattern="dd/MM/yyyy" />
+                    <h:outputLabel value="Date of Delivery" for="txtdor"></h:outputLabel>
+                    <p:calendar id="txtdor" value="#{addQuotationBean.eQuotation.dateOfDelivery}" mode="popup"  pattern="dd/MM/yyyy" />
+
+                </h:panelGrid>
+                <p:commandButton  value="Add" action="#{addQuotationBean.addQuotation()}" oncomplete="dlg1.hide()"/>
+
+            </h:form>
+        </p:dialog>
+
+
+
+
+    </ui:define>
+</ui:composition>

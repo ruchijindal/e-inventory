@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+
+    <ui:define name="title">
+        Add Order Qc Details
+    </ui:define>
+
+
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:dataTable var="order"  value="#{orderQcReportBean.list}" paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15"   paginatorPosition="bottom" rowStyleClass="#{orderQcReportBean.setColor(order)? 'backcolor' : null}">
+                <f:facet name="header">
+                    Order Details
+                </f:facet>
+                <p:column headerText="Order id" style="width:150px">
+                    <h:outputText value="#{order.orderId}"/>
+                </p:column>
+                <p:column headerText="Site Name" style="width:150px">
+                    <h:outputText value="#{order.siteName}"/>
+                </p:column>
+                <p:column headerText="Product Category " style="width:150px">
+                    <h:outputText value="#{order.productCategoryName}"/>
+                </p:column>
+                <p:column headerText="Product" style="width:150px">
+                    <h:outputText value="#{order.productName}"/>
+                </p:column>
+                <p:column headerText="Order Date" style="width:150px">
+                    <h:outputText value="#{order.orderDate}"/>
+                </p:column>
+                <p:column headerText="Quotaion Id" style="width:150px">
+                    <h:outputText value="#{order.quotationId}"/>
+                </p:column>
+                <p:column headerText="Vendor" style="width:150px">
+                    <h:outputText value="#{order.vendorName}"/>
+                </p:column>
+                <p:column headerText="Unit Price" style="width:150px">
+                    <h:outputText value="#{order.unitPrice}"/>
+                </p:column>
+                <p:column headerText="Order Quantity" style="width:150px">
+                    <h:outputText value="#{order.orderQuantity}"/>
+                </p:column>
+                <p:column headerText="Option" style="width:200px">
+                    <p:commandLink value="Generate Report" onclick="dlg1.show();"  action="#{orderQcReportBean.forDialog(order)}" update="form2,form" rendered="#{!orderQcReportBean.renderRow}"></p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog id="dlg" header="Add QC Report"  widgetVar="dlg1" width="300" hideEffect="200" >
+            <h:form id="form2">
+                <h:panelGrid columns="2" cellspacing="3">
+                   <h:outputLabel value="Quality Manager" for="txt_mgr"  ></h:outputLabel>
+                   <h:selectOneMenu  id="txt_mgr" value="#{orderQcReportBean.employeeId}" style="width: 150px;"  >
+                        <f:selectItem itemLabel="Select" itemValue="0"/>
+                        <f:selectItems  value="#{orderQcReportBean.selectEmployeeList}"/>                        
+                    </h:selectOneMenu>
+                    <h:outputLabel value="Quantity Accepted:" for="txtqty"></h:outputLabel>
+                    <h:inputText  value="#{orderQcReportBean.eOrderQc. qcQuantityAccepted}" id="txtqty"/>
+                    <h:outputLabel value="Quantity Rejected" for="unit_price"></h:outputLabel>
+                    <h:inputText  value="#{orderQcReportBean.eOrderQc.qcQuantityReject}" id="unit_price"/>
+                    <h:outputLabel value="Date " for="txtdod"></h:outputLabel>
+                    <p:calendar id="txtdod" value="#{orderQcReportBean.eOrderQc.date}" mode="popup"  pattern="dd-MMM-yy" />
+                </h:panelGrid>
+                <p:commandButton  value="Add" action="#{orderQcReportBean.addOrderQc()}" oncomplete="dlg1.hide()" update="form"/>
+
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+
+</ui:composition>

@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Add Site Stock
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:messages id="msgs"  showDetail="false" />
+            <p:panel header="Project-Site Selection" >
+                <h:panelGrid columns="4" cellspacing="5">
+                    <h:outputLabel value="Select Project" for="txt_proj"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_proj" value="#{addSiteStockBean.projectId}" style="width: 150px;">
+                        <f:selectItem itemLabel="Select"/>
+                        <f:selectItems  value="#{addSiteStockBean.projectList}"/>
+                        <p:ajax process="txt_proj" event="change" update="txt_site,msgs,books" listener="#{addSiteStockBean.populateSite()}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="Select Site" for="txt_site"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_site" value="#{addSiteStockBean.siteId}" style="width: 150px;" >
+                        <f:selectItem itemLabel="Select" itemValue="0"/>
+                        <f:selectItems  value="#{addSiteStockBean.siteList}"/>
+                        <p:ajax process="txt_site" event="change" update="books,msgs" listener="#{addSiteStockBean.showData()}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+               
+            </p:panel>
+
+            <p:ajaxStatus style="width:16px;height:16px;">
+                <f:facet name="start">
+                    <h:graphicImage value="../design/ajaxloading.gif" />
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+
+
+            <p:outputPanel id="books">
+                <p:dataTable value="#{addSiteStockBean.mainBoqList}" var="boq">
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Product Category" />
+                        </f:facet>
+                        <h:outputText value="#{addSiteStockBean.findCategory(boq.productCategoryId)}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Product" />
+                        </f:facet>
+                        <h:outputText value="#{addSiteStockBean.findProduct(boq.productId)}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Project Boq Quantity" />
+                        </f:facet>
+                        <h:outputText value="#{boq.minQuantity}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Surplus" />
+                        </f:facet>
+                        <h:inputText  value="#{boq.surplus}" size="4"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Shortage" />
+                        </f:facet>
+                        <h:inputText value="#{boq.shortage}" size="4"/>
+                    </p:column>
+
+                </p:dataTable>
+
+
+
+
+            </p:outputPanel>
+            <br/><br/>
+
+            <p:commandButton value="Add" update="msgs"
+                             action="#{addSiteStockBean.generateXML()}" >
+
+            </p:commandButton>
+        </h:form>
+    </ui:define>
+
+
+
+</ui:composition>

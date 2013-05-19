@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Bill Of Quantity
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="form">
+
+            <p:messages id="msgs"  showDetail="false" />
+
+            <p:panel header="Create Organization BOQ">
+                <h:panelGrid columns="2" id="grid">
+                    <h:outputLabel value="Select Project" for="txt_proj"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_proj" value="#{addOrgBean.projectId}" style="width: 150px;"  >
+                        <f:selectItem itemLabel="Select"  noSelectionOption="true" itemValue="0"/>
+                        <f:selectItems  value="#{addOrgBean.projectList}"/>
+                        <p:ajax process="txt_proj" event="change" update="form" listener="#{addOrgBean.showData()}"/>
+                    </h:selectOneMenu>
+
+                </h:panelGrid>
+               
+            </p:panel>
+
+            <p:ajaxStatus style="width:16px;height:16px;">
+                <f:facet name="start">
+                    <h:graphicImage value="../design/ajaxloading.gif" />
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+
+            <p:outputPanel id="books">
+                <p:dataTable value="#{addOrgBean.mainBoqList}" var="boq">
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Product Category" />
+                        </f:facet>
+                        <h:outputText value="#{addOrgBean.findCategory(boq.productCategoryId)}" />
+                    </p:column>
+
+                     <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Product" />
+                        </f:facet>
+                         <h:outputText value="#{addOrgBean.findProduct(boq.productId)}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Rate(Rs.)" />
+                        </f:facet>
+                        <h:outputText value="#{(boq.rate)}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Main BOQ Quantity" />
+                        </f:facet>
+                        <h:outputText value="#{(boq.quntity)}" />
+
+                    </p:column>
+                     <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Org. BOQ Quantity" />
+                        </f:facet>
+                         <h:inputText id="text" value="#{boq.minQuantity}" size="4">
+                             <p:ajax process="text" event="blur" update="form" listener="#{addOrgBean.checkQuantity(boq)}"/>
+                         </h:inputText>
+                    </p:column>
+                     <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Total Rate" />
+                        </f:facet>
+                         <h:outputText value="#{(boq.minQuantity * boq.rate)}" />
+                    </p:column>
+                    
+                </p:dataTable>
+
+                 <p:commandButton value="Add" update="books msgs"
+                                  action="#{addOrgBean.generateXML()}" >
+
+                </p:commandButton>
+            </p:outputPanel>
+          
+        </h:form>
+
+
+    </ui:define>
+
+
+</ui:composition>

@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Bill Of Quantity
+    </ui:define>
+    <ui:define name="content">
+        <h:form id="form">
+
+            <p:messages id="msgs"  showDetail="false" />
+
+            <p:panel header="Create Main BOQ">
+                <h:panelGrid columns="2" id="grid">
+                    <h:outputLabel value="Select Project" for="txt_proj"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_proj" value="#{addmainboq.projectId}" style="width: 150px;"  >
+                        <f:selectItem itemLabel="Select"  noSelectionOption="true" itemValue="0"/>
+                        <f:selectItems  value="#{addmainboq.projectList}"/>
+                        <p:ajax process="txt_proj" event="change" update="books,msgs" listener="#{addmainboq.changeProject()}"/>
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Select Product Category " for="txt_desg"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_desg" value="#{addmainboq.addMainBoq.productCategoryId}" style="width: 150px;">
+                        <f:selectItem itemLabel="Select"  noSelectionOption="true" itemValue="0"/>
+                        <f:selectItems  value="#{addmainboq.eProductList}"/>
+                        <p:ajax process="txt_desg" event="change" update="txt_desg1" listener="#{addmainboq.renderSite()}"/>
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Select Product" for="txt_desg"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_desg1" value="#{addmainboq.addMainBoq.productId}" style="width: 150px;" disabled="#{addmainboq.render}">
+                        <f:selectItem itemLabel="Select"  noSelectionOption="true" itemValue="0"/>
+                        <f:selectItems  value="#{addmainboq.categorys}"/>
+
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="Quantity : *" for="txt_title"></h:outputLabel>
+                    <h:inputText id="txt_title"
+                                 value="#{addmainboq.addMainBoq.quntity}" required="true"/>
+
+                    <h:outputLabel value="Rate : *" for="txt_author"></h:outputLabel>
+                    <h:inputText id="txt_author" required="true"
+                                 value="#{addmainboq.addMainBoq.rate}" />
+                </h:panelGrid>
+                 <p:commandButton value="Add" update="books msgs @parent"
+                                 action="#{addmainboq.reinit}" >
+                    <p:collector value="#{addmainboq.addMainBoq}"
+                                 addTo="#{addmainboq.mainBoqList}" />
+                </p:commandButton>
+                <p:commandButton value="Reset" type="reset"/>
+               
+
+            </p:panel>
+
+            <p:ajaxStatus style="width:16px;height:16px;">
+                <f:facet name="start">
+                    <h:graphicImage value="../design/ajaxloading.gif" />
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+
+            <p:outputPanel id="books">
+                <p:dataTable value="#{addmainboq.mainBoqList}" var="boq">
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Product Category" />
+                        </f:facet>
+                        <h:outputText value="#{addmainboq.findCategory(boq.productCategoryId)}" />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Product" />
+                        </f:facet>
+                        <h:outputText value="#{addmainboq.findProduct(boq.productId)}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Quantity" />
+                        </f:facet>
+                        <h:outputText value="#{boq.quntity}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Rate" />
+                        </f:facet>
+                        <h:outputText value="#{boq.rate}" />
+                    </p:column>
+
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Operation" />
+                        </f:facet>
+                        <p:commandLink value="Remove" update="form:books" process="@this">
+                            <p:collector value="#{boq}"
+                                         removeFrom="#{addmainboq.mainBoqList}" />
+                        </p:commandLink>
+                    </p:column>
+
+                </p:dataTable>
+            </p:outputPanel>
+            <p:commandButton value="Add"
+                             action="#{addmainboq.generateXML}" update="msgs,form"/>
+        </h:form>
+
+
+    </ui:define>
+
+
+</ui:composition>

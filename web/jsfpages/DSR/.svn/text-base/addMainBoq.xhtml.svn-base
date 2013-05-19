@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Add Main Boq
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="siteBoq">
+            <p:messages id="msgs"  showDetail="false" />
+            <p:panel header="Project Selection" >
+                <h:panelGrid columns="4" cellspacing="5">
+                    <h:outputLabel value="Select Project" for="txt_proj"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_proj" value="#{mainBoq.projectId}" style="width: 150px;">
+                        <f:selectItem itemLabel="Select"/>
+                        <f:selectItems  value="#{mainBoq.projectList}"/>
+                        <p:ajax process="txt_proj" listener="#{mainBoq.readBoq()}" update="itemform1"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+            <p:panel header="Item Selection" >
+                <p:tree value="#{mainBoq.root}" var="node" selectionMode="checkbox"  selection="#{mainBoq.selectedNodes}" >
+                    <p:treeNode>
+                        <h:outputText value="&nbsp;&nbsp;#{node.name}" />
+                    </p:treeNode>
+                </p:tree>
+                <p:commandButton value="Add" action="#{mainBoq.showData()}" update="itemform1,siteBoq"/>
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start"><h:graphicImage value="/resources/images/ajaxloading.gif" /></f:facet>
+                    <f:facet name="complete"><h:outputText value=" " /></f:facet>
+                </p:ajaxStatus>
+            </p:panel>
+        </h:form>
+
+        <h:form id="itemform1" prependId="false">
+            <p:dataTable var="boq" value="#{mainBoq.reBoqList}"  paginator="true" rows="10"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15"   paginatorPosition="bottom" rowStyleClass="#{boq.quntity ne 0 ? 'backcolor' : null}">
+                <f:facet name="header">
+                    <div class="facetheader">
+                        Item Details
+                    </div>
+                </f:facet>
+
+                <p:column headerText="Product Category" style="width:200px">
+                    <h:outputText value="#{mainBoq.showProductCategory(boq.productCategoryId)}"/>
+                </p:column>
+                <p:column headerText="Product" style="width:200px">
+                    <h:outputText value="#{mainBoq.showProduct(boq.productId)}"/>
+                </p:column>
+                <p:column headerText="Unit" style="width:200px">
+                    <h:outputText value="#{mainBoq.showUnit(boq.productId)}"/>
+                </p:column>
+                <p:column headerText="Quantity" style="width:200px">
+                    <h:inputText value="#{boq.quntity}" size="4"/>
+                </p:column>
+                <p:column headerText="rate(Rs.)" style="width:200px">
+                    <h:inputText value="#{boq.rate}" size="4"/>
+                </p:column>
+                <p:column headerText="Option" style="width:200px">
+                    <p:commandLink value="Delete" action="#{mainBoq.delete(boq)}" update="itemform1"/>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="Add" action="#{mainBoq.generateXML()}" update="itemform1,siteBoq,msgs"/>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>

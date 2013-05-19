@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Indent List
+    </ui:define>
+
+
+    <ui:define name="content">
+        <h:form prependId="false" style="width: 600px;">
+
+            <h:outputLabel value="Select Project" for="txt_proj"></h:outputLabel>
+            <h:selectOneMenu  id="txt_proj" value="#{intentListBean.projectId}" style="width: 150px;">
+                <f:selectItem itemLabel="Select" itemValue="0"/>
+                <f:selectItems  value="#{intentListBean.projectList}"/>
+                <p:ajax process="txt_proj" event="change" update="grid" listener="#{intentListBean.populateSite()}"/>
+            </h:selectOneMenu>
+
+            <p:dataGrid id="grid" var="site" value="#{intentListBean.siteList}" columns="2" style="padding:4px;"
+                        rows="12" paginator="true" effect="true"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="9,12,15" >
+                <p:column>
+                    <p:panel header="#{site.name}" style="text-align:left; border: #aed0ea 1px solid;width: 250px; height: 150px;">
+                        <h:panelGrid columns="1">
+                            <h:outputText value="#{site.name}" />
+                            <p:commandLink value="Indent" immediate="#{intentListBean.reDirect(site)}"/>
+                        </h:panelGrid>                       
+                    </p:panel>                    
+                </p:column>
+            </p:dataGrid>
+
+        </h:form>
+    </ui:define>
+
+
+
+</ui:composition>

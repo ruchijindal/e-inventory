@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+       Create Intent
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="intent">
+            <p:panel header="Project-Site Selection" >
+                <h:panelGrid columns="4" cellspacing="5">
+                    <h:outputLabel value="Select Site" for="txt_site"></h:outputLabel>
+                    <h:selectOneMenu  id="txt_site" value="#{createIntentBean.siteId}" style="width: 150px;" >
+                        <f:selectItem itemLabel="Select" itemValue="0"/>
+                        <f:selectItems  value="#{createIntentBean.siteList}"/>
+                       <p:ajax process="txt_site" event="change" listener="#{createIntentBean.populateTree()}" update="tree,treetable"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+            <p:panel header="Item Selection" >
+                <p:tree id="tree" value="#{createIntentBean.root}" var="node" selectionMode="checkbox"  selection="#{createIntentBean.selectedNodes}" >
+                    <p:treeNode>
+                        <h:outputText value="&nbsp;&nbsp;#{node.name}" />
+                    </p:treeNode>
+                </p:tree>
+                <p:commandButton value="Add" action="#{createIntentBean.showData()}" update="intent,treetable"/>
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start"><h:graphicImage value="/resources/images/ajaxloading.gif" /></f:facet>
+                    <f:facet name="complete"><h:outputText value=" " /></f:facet>
+                </p:ajaxStatus>
+            </p:panel>
+        
+            <p:treeTable id="treetable" value="#{createIntentBean.root1}" var="document" expanded="true">
+                <p:column>
+                    <f:facet name="header">
+				Name
+                    </f:facet>
+                    <h:outputText  value="#{document.name}" >
+                    </h:outputText>
+                </p:column>
+
+                  <p:column>
+                    <f:facet name="header">
+				Quantity
+                    </f:facet>
+                    <h:inputText id="surplus"  value="#{siteStockBean.surplus}" rendered="#{siteStockBean.chkstatus(document)}" size="4">
+                    </h:inputText>
+                </p:column>
+
+            </p:treeTable>
+
+          
+        </h:form>
+    </ui:define>
+</ui:composition>

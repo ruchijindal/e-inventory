@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../Common/Template.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="title">
+        Add Project
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form1">
+            <p:tabView>
+               
+                <p:tab title="Project" id="project">
+
+                    <p:panel header="Add Project" style="margin-left: -20px;">
+                        <h:panelGrid columns="2" cellpadding="3">
+                            <h:outputLabel value="Project Name" for="txt_projname"></h:outputLabel>
+                            <h:inputText id="txt_projname" value="#{projectWizardBean.eProject.name}" />
+
+                            <h:outputLabel value="Project Location" for="txt_location"></h:outputLabel>
+                            <h:inputText id="txt_location" value="#{projectWizardBean.eProject.projLocation}" />
+
+                            <h:outputLabel value="Project Description" for="txt_description"></h:outputLabel>
+                            <h:inputTextarea rows="3" cols="20" id="txt_description" value="#{projectWizardBean.eProject.projDescription}"/>
+
+
+                        </h:panelGrid>
+                        <br/>
+
+                       
+                    </p:panel>
+                </p:tab>
+
+                <p:tab title="Sites" id="sites">
+                    <p:panel header="Add Site" style="margin-left: -20px;">
+                        <h:panelGrid columns="2" cellpadding="3">
+
+                            <h:outputLabel value="Site Name" for="txt_site1"></h:outputLabel>
+                            <h:inputText id="txt_site1" value="#{projectWizardBean.eSites.name}" />
+
+                            <h:outputLabel value="Sitet Location" for="txt_location1"></h:outputLabel>
+                            <h:inputText id="txt_location1" value="#{projectWizardBean.eSites.siteLocation}" />
+
+                            <h:outputLabel value="Site Description" for="txt_description1"></h:outputLabel>
+                            <h:inputTextarea rows="3" cols="20" id="txt_description1" value="#{projectWizardBean.eSites.siteDescription}"/>
+
+
+                        </h:panelGrid>
+                        <br/>
+
+                        <p:commandButton value="Add" action="#{projectWizardBean.addProjectsite()}" update="form1" ajax="false" />
+                        <p:commandButton value="Reset" type="reset" style="margin-left: 5px;"/>
+                        <p:ajaxStatus style="width:16px;height:16px;">
+                            <f:facet name="start"><h:graphicImage value="/resources/images/ajaxloading.gif" /></f:facet>
+
+                            <f:facet name="complete"><h:outputText value=" " /></f:facet>
+                        </p:ajaxStatus>
+
+                    </p:panel>
+                </p:tab>
+
+
+            <p:ajaxStatus>
+                <f:facet name="start">
+                    <h:graphicImage value="../design/ajaxloading.gif" />
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+            </p:tabView>
+        </h:form>
+
+
+    </ui:define>
+
+
+
+</ui:composition>

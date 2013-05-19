@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+        <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.prime.com.tr/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+            template="./../Common/Template.xhtml">
+            
+            <ui:define name="title">
+              Dashboard
+            </ui:define>
+ 
+            <ui:define name="content">
+                 <h:form id="form">
+
+                     <p:panel header="ORDER SUMMERY" >
+                         <h:panelGrid  columns="2" cellpadding="20px;" style="text-align: center">
+                         <h:panelGrid  columns="1" cellpadding="20px;" >
+                             <p:commandLink  actionListener="#{loginBean.redirectPending()}">
+                              <p:graphicImage value="/Resources/images/2.png" style="border-width: 20px;"  />
+                          </p:commandLink>                        
+                        <h:outputLabel value="Pending Orders"/>
+                         </h:panelGrid>
+                         <h:panelGrid  columns="1" cellpadding="20px;" >
+                           <p:commandLink  actionListener="#{loginBean.redirectPending()}">
+                              <p:graphicImage value="/Resources/images/1.png" style="border-width: 20px;" />
+                          </p:commandLink>                 
+                        <h:outputLabel value="Recieved Orders"/>
+                         </h:panelGrid>
+                         <h:panelGrid  columns="1" cellpadding="20px;" >
+                             <p:commandLink   actionListener="#{loginBean.redirectOrder()}"  >
+                              <p:graphicImage value="/Resources/images/3.png" style="border-width: 20px;" />
+                          </p:commandLink >
+                         <h:outputLabel value="Order Placed"/>
+                         </h:panelGrid>
+                         <h:panelGrid  columns="1" cellpadding="20px;" >
+                             <p:commandLink  actionListener="#{loginBean.redirectPurchase()}"   >
+                              <p:graphicImage value="/Resources/images/images.jpeg" style="border-width: 20px;" />
+                          </p:commandLink>
+                          <h:outputLabel value="Purchase Order"/>
+                         </h:panelGrid>
+
+                
+                    </h:panelGrid>
+
+                </p:panel>
+  </h:form>
+
+            </ui:define>
+
+
+        </ui:composition>
+        
+   

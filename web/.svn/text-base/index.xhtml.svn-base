@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.prime.com.tr/ui">
+    <h:head>
+        <title>Login Page</title>
+        <link href="${facesContext.externalContext.requestContextPath}/Resources/css/default.css" rel="stylesheet" type="text/css" />
+    </h:head>
+    <h:body onload="dlg.show()">
+        <p:layout fullPage="true">
+
+            <p:layoutUnit id="top" position="top" height="40" gutter="0">
+                <div id="header-text" class="ui-widget-header" align="center">
+                    <span>e-Inventory </span>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center" >
+                <p:growl id="growl"  showDetail="true"/>
+
+	<h:form>
+          
+            <p:dialog id="dialog" header="Login" widgetVar="dlg" closable="false" draggable="false" resizable="false" styleClass="dialog1">
+            <h:panelGrid columns="2" cellpadding="5" >
+			<h:outputLabel for="userId" value="UserId* " />
+                        <h:inputText   id="userId" value="#{loginBean.userId}"  label="username" />
+
+			<h:outputLabel for="password" value="Password* " />
+                        <h:inputSecret   id="password" value="#{loginBean.password}"   label="password"  />
+			
+                        <p:commandButton value="Login" update="growl"  actionListener="#{loginBean.login()}"/>
+		</h:panelGrid>
+            </p:dialog>
+	</h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit id="bottom" position="bottom" height="40" gutter="0">
+
+
+            </p:layoutUnit>
+        </p:layout>
+
+    </h:body>
+</html>
+
